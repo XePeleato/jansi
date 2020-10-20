@@ -60,7 +60,7 @@ public class FilterPrintStream extends PrintStream
     }
 
     @Override
-    public void write(int data)
+    public synchronized void write(int data)
     {
         if (filter(data))
         {
@@ -69,7 +69,7 @@ public class FilterPrintStream extends PrintStream
     }
 
     @Override
-    public void write(byte[] buf, int off, int len)
+    public synchronized void write(byte[] buf, int off, int len)
     {
         for (int i = 0; i < len; i++)
         {
@@ -97,7 +97,7 @@ public class FilterPrintStream extends PrintStream
         ps.flush();
     }
 
-    private void write(char buf[], int len) {
+    private synchronized void write(char buf[], int len) {
         for (char c : buf)
         {
             if (len-- <= 0) {
@@ -109,7 +109,7 @@ public class FilterPrintStream extends PrintStream
         }
     }
 
-    private void write(String s) {
+    private synchronized void write(String s) {
         int len = s.length();
         char[] buf = (len < strToCharBuffer.length)? strToCharBuffer : new char[len];
         s.getChars(0, len, buf, 0);
